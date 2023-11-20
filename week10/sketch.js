@@ -68,7 +68,6 @@ function draw() {
     shapeList.splice(i,1);
   }
   }
-  strokeWeight(random(1,5));
   stroke(random(0,255),random(0,255),random(0,255));
   noFill();
   beginShape();
@@ -76,6 +75,7 @@ function draw() {
     var r = map(volhistory[i], 0, 1, 10, (width+height)/2); 
     var x = 4*r * cos(i);
     var y = 4*r * sin(i);
+    strokeWeight(5);
     vertex(x, y);
   }
   if (volhistory.length > 360) {
@@ -122,7 +122,7 @@ class shapeobject{
     }
   }
   show(vol){
-    var trans = map(vol, 0.015, 0.03, 30, 180);
+    var trans = map(vol, 0.015, 0.03, 60, 180);
     stroke(this.color[0], this.color[1], this.color[2], trans);
     fill(this.color[0], this.color[1], this.color[2], trans)
    
