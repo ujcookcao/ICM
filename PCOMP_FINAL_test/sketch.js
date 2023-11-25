@@ -1,52 +1,72 @@
 var textEffects = []; // 存储所有文字特效的数组
-
+var eyeImages = [];
+var transformationVideo = [];
+var timer = 0;
+let interval = 3000;
+var eyeIndex = 0;
+var isVideoPlaying = false;
 function setup() {
   createCanvas(1512, 945);
-  textEffects.push(new TextEffect(200, 300, "Hello"));
+
+  //body text video code
+  videoBodytext = createVideo('video/bodytext.mp4');
   slider = createSlider(0, 4, 0, 0.1);
   slider.position(10, 10);
+  videoBodytext.speed(0);
   slider.input(function() {
-    video.speed(slider.value());
+    videoBodytext.speed(slider.value());
   });
-  video.play();
-  video.speed(0);
+  videoBodytext.hide();
+
+  //transformation video code
+  transformationVideo.push(createVideo('video/lychking.mp4'));
+  transformationVideo[0].hide();
+  transformationVideo[0].onended(videoEnded);
+
 }
 function preload() {
-  robotimg = loadImage('robot.png');
-  //video = createVideo('video/bodytext.mp4');
+  robotImg = loadImage('image/robot.png');
+  eyeImages.push(loadImage('image/eye1.png'));
+  eyeImages.push(loadImage('image/eye2.png'));
 }
 
 
 function draw() {
-  background(160, 0, 0);
-  image(robotimg, 0, 0, 1512, 945);
+  background(255);
 
-  for (let textEffect of textEffects) {
-    textEffect.move();
-    textEffect.display();
+  let currentTime = millis(); // 获取当前时间
+  if (currentTime - timer > interval) {
+    if(eyeIndex < eyeImages.length - 1){
+      eyeIndex++;
+    }else{
+      eyeIndex = 0;
+    }
+    timer = currentTime; 
   }
-  image(video, 0, 0); 
+
+  image(eyeImages[eyeIndex], 0, 0, 1512, 945);//眼睛形状蒙版，确保画面不会超出眼睛形状
+
+  image(robotImg, 0, 0, 1512, 945);//人物形状蒙版，确保画面不会超出人物形状
+  if(millis() < 2000){
+    triggerVideo();
+  }
+  if (isVideoPlaying) {
+    image(transformationVideo[0], 0, 0, width, height);
+  }
 }
-//image(robotimg, 0, 0, 1512, 945);
 
-class TextEffect {
-  constructor(startX, startY, textContent) {
-    this.pos = createVector(startX, startY); // 文字的起始位置
-    this.velocity = createVector(1, 0); // 文字的移动速度和方向
-    this.text = textContent; // 要显示的文本内容
+
+function triggerVideo() {
+  // 检查视频是否已经在播放
+  if (!isVideoPlaying) {
+    transformationVideo[0].play();
+    //transformationVideo[0].show(); // 显示视频
+    isVideoPlaying = true; // 更新播放状态
   }
-
-  move() {
-    // 更新文字的位置
-    this.pos.add(this.velocity);
-  }
-
-  display() {
-    // 显示文字
-    fill(255);
-    strokeWeight(100);
-    text(this.text, this.pos.x, this.pos.y);
-  }
-
-  // 如果需要，可以添加其他方法，例如检查文字是否超出了边界等
+}
+function videoEnded() {
+  console.log('视频播放结束');
+  isVideoPlaying = false; // 更新播放状态
+  transformationVideo[0].hide(); // 隐藏视频
+  // 在这里添加视频播放结束后的逻辑
 }
