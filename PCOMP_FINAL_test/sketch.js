@@ -5,6 +5,7 @@ var timer = 0;
 let interval = 3000;
 var eyeIndex = 0;
 var isVideoPlaying = false;
+var isbodytextPlaying = false;
 let poseNet;
 let nosePosition = null;
 let video;
@@ -25,6 +26,7 @@ function setup() {
     videoBodytext.speed(slider.value());
   });
   videoBodytext.hide();
+  videoBodytext.onended(bodytextvideoEnded);
 
   //transformation video code
   transformationVideo.push(createVideo('video/lychking.mp4'));
@@ -48,6 +50,8 @@ function preload() {
 
 function draw() {
   background(255);
+
+
   //image(video, 0, 0, width, height);
   let currentTime = millis(); // 获取当前时间
   if (currentTime - timer > interval) {
@@ -64,6 +68,7 @@ function draw() {
   image(robotImg, 0, 0, Screenwidth, Screenheight);//人物形状蒙版，确保画面不会超出人物形状
   if(millis() < 2000){
     //triggerVideo();
+    triggerbodytextvideo();
   }
   if (isVideoPlaying) {
     image(transformationVideo[0], 0, 0, Screenwidth, Screenheight);
@@ -85,9 +90,19 @@ function draw() {
     rectMode(CENTER);
     //ellipse(eyeX, eyeY, 50);
   }
+
+//bodytexting code while charging energy
+  if (isbodytextPlaying) {
+    image(videoBodytext, 0, 0, Screenwidth, Screenheight);
+ }
 }
 
-
+function triggerbodytextvideo(){
+  if(!isbodytextPlaying){
+    videoBodytext.play();
+    isbodytextPlaying = true;
+  }
+}
 function triggerVideo() {
   // 检查视频是否已经在播放
   if (!isVideoPlaying) {
@@ -100,6 +115,12 @@ function videoEnded() {
   console.log('视频播放结束');
   isVideoPlaying = false; // 更新播放状态
   transformationVideo[0].hide(); // 隐藏视频
+  // 在这里添加视频播放结束后的逻辑
+}
+function bodytextvideoEnded() {
+  console.log('视频播放结束');
+  isbodytextPlaying = false; // 更新播放状态
+  videoBodytext.hide(); // 隐藏视频
   // 在这里添加视频播放结束后的逻辑
 }
 
