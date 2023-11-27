@@ -1,0 +1,102 @@
+int val = 0;
+int val1= 0;
+int stageStatus = 0;
+const int motorPin1 = 9; 
+//motor2 is the virbration motor
+const int motorPin2 = 10;
+const int handPin = 8;
+int handState = 0;
+unsigned long stage1StartTime = 0; // 跟踪stage1开始的时间
+unsigned long stage2StartTime = 0; // 跟踪stage1开始的时间
+int wirespinTime = 1000;
+int bodytextvideoduration = 27000;
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(13,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(2,OUTPUT);
+  pinMode(3,OUTPUT);
+  pinMode(4,OUTPUT);
+  pinMode(handPin,INPUT);
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+}
+
+void loop() {
+  // 更新手状态
+  handState = digitalRead(handPin) == HIGH;
+
+  // 更新阶段状态
+  updateStageStatus();
+
+  // 根据当前状态执行对应的动作
+  switch (stageStatus) {
+    case 1:
+      executeStage1();
+      break;
+    case 2:
+      executeStage2();
+      break;
+    case 3:
+      executeStage3();
+      break;
+    default:
+      resetStages();
+      break;
+  }
+}
+  
+void updateStageStatus() {
+  int sensorValue = analogRead(A0);
+
+  if (handState == HIGH && stageStatus != 1) {
+    Serial.println("1");
+    stageStatus = 1;
+    stage1StartTime = 0; // 重置stage1开始时间
+  }
+}
+
+void executeStage1() {
+  if (stage1StartTime == 0) { // 如果这是第一次进入stage1
+    stage1StartTime = millis(); // 记录开始时间
+    analogWrite(motorPin2, 255); // 假设这是马达运行的代码
+  }
+
+  if (millis() - stage1StartTime >= bodytextvideoduration) { 
+    stageStatus = 2; // 切换到stage2
+    stage1StartTime = 0; // 重置开始时间
+    analogWrite(motorPin2, 0);
+  }
+  // if (handState == HIGH) {
+  //   analogWrite(motorPin2, 255);
+  // } else {
+  //   analogWrite(motorPin2, 0);
+  // }
+}
+
+void executeStage2() {
+  digitalWrite(3, HIGH);
+  //delay(13000);
+    if (stage2StartTime == 0) { // 如果这是第一次进入stage1
+    stage2StartTime = millis(); // 记录开始时间
+     analogWrite(motorPin1, 125); // Control the motor
+  }
+
+  if (millis() - stage2StartTime >= wirespinTime) { // 如果已经过去了4秒
+    stageStatus = 3; // 切换到stage2
+    stage2StartTime = 0; // 重置开始时间
+    analogWrite(motorPin1, 0); // Control the motor
+  }
+}
+
+void executeStage3() {
+  digitalWrite(4, HIGH);
+  resetStages();
+}
+
+void resetStages() {
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+}
