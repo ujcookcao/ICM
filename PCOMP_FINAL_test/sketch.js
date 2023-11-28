@@ -1,5 +1,5 @@
 var textEffects = []; // 存储所有文字特效的数组
-var eyeImages = [];
+var eyeImages = {};
 var transformationVideo = [];
 var timer = 0;
 let interval = 3000;
@@ -13,6 +13,7 @@ let Screenwidth = 1512;
 let Screenheight = 945;
 let eyeShiftx;
 let eyeShifty;
+let voicelist = [];
 
 function setup() {
   createCanvas(Screenwidth, Screenheight);
@@ -43,8 +44,9 @@ function setup() {
 }
 function preload() {
   robotImg = loadImage('image/robot.png');
-  eyeImages.push(loadImage('image/eye1.png'));
-  eyeImages.push(loadImage('image/eye2.png'));
+  eyeImages.eye1 = loadImage('image/eye1.png');
+  eyeImages.meishaonvzhanshi = loadImage('image/meishaonvzhanshi.png');
+
 }
 
 

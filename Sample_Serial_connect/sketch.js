@@ -50,7 +50,7 @@ function setup() {
  
   //----------------------------------------------------------------------------
   //transformation video code
-  transformationVideo.push(createVideo('video/lychking.mp4'));
+  transformationVideo.push(createVideo('video/meishaonvzhanshi.mp4'));
   transformationVideo[0].hide();
   transformationVideo[0].onended(videoEnded);
   //----------------------------------------------------------------------------
@@ -238,7 +238,6 @@ function gotPoses(poses) {
 
 function preload() {
   robotImg = loadImage('image/robot.png');
-  eyeImages.push(loadImage('image/eye1.png'));
-  eyeImages.push(loadImage('image/eye2.png'));
+  eyeImages.push(loadImage('image/美少女战士眼睛.png'));
+  eyeImages.push(loadImage('image/美少女战士眼睛.png'));
 }
-
