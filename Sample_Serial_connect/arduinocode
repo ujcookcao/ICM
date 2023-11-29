@@ -100,3 +100,4 @@ void resetStages() {
   digitalWrite(3, LOW);
   digitalWrite(4, LOW);
 }
+

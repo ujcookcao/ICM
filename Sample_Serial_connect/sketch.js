@@ -1,12 +1,12 @@
 let port;
 let connectBtn;
-let stageStatus = 1;
+let stageStatus = 4;
 var textEffects = []; // 存储所有文字特效的数组
 var eyeImages = [];
 var transformationVideo = [];
 var timer = 0;
 let interval_open = 3000;
-let interval_close = 1;
+let interval_close = 100;
 var eyeIndex = 0;
 var isVideoPlaying = false;
 var isbodytextPlaying = false;
@@ -90,6 +90,11 @@ function draw() {
         timer = currentTime;
     }
   }else if(eyeIndex == 1){
+    if (currentTime - timer > interval_close) {
+      eyeIndex = 2;
+      timer = currentTime;
+    }
+  }else if(eyeIndex ==2){
     if (currentTime - timer > interval_close) {
       eyeIndex = 0;
       timer = currentTime;
@@ -246,6 +251,7 @@ function preload() {
   eyeImages.eyeList1 = [];
   eyeImages.eyeList2 = [];
   eyeImages.eyeList1.push(loadImage('image/美少女战士眼睛.png'));
+  eyeImages.eyeList1.push(loadImage('image/meishaonvzhanshi_2.png'));
   eyeImages.eyeList1.push(loadImage('image/meishaonvzhanshi_3.png'));
   eyeImages.eyeList2.push(loadImage('image/eye1.png'));
   eyeImages.eyeList2.push(loadImage('image/eye2.png'));
