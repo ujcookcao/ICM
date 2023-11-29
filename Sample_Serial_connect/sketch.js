@@ -1,11 +1,12 @@
 let port;
 let connectBtn;
-let stageStatus = 1;
+let stageStatus = 4;
 var textEffects = []; // 存储所有文字特效的数组
 var eyeImages = [];
 var transformationVideo = [];
 var timer = 0;
-let interval = 3000;
+let interval_open = 3000;
+let interval_close = 100;
 var eyeIndex = 0;
 var isVideoPlaying = false;
 var isbodytextPlaying = false;
@@ -39,12 +40,12 @@ function setup() {
   //----------------------------------------------------------------------------
    //body text video code
    videoBodytext = createVideo('video/bodytext.mp4');
-   slider = createSlider(0, 4, 0, 0.1);
-   slider.position(10, 10);
+  //  slider = createSlider(0, 4, 0, 0.1);
+  //  slider.position(10, 10);
    videoBodytext.speed(0);
-   slider.input(function() {
-     videoBodytext.speed(slider.value());
-   });
+  //  slider.input(function() {
+  //    videoBodytext.speed(slider.value());
+  //  });
    videoBodytext.hide();
    videoBodytext.onended(bodytextvideoEnded);
  
@@ -83,13 +84,16 @@ function draw() {
 
   //根据时间变换眼睛表情
   let currentTime = millis(); // 获取当前时间
-  if (currentTime - timer > interval) {
-    if(eyeIndex < eyeImages.length - 1){
-      eyeIndex++;
-    }else{
-      eyeIndex = 0;
+  if(eyeIndex == 0){
+    if (currentTime - timer > interval_open) {
+        eyeIndex = 1;
+        timer = currentTime;
     }
-    timer = currentTime; 
+  }else if(eyeIndex == 1){
+    if (currentTime - timer > interval_close) {
+      eyeIndex = 0;
+      timer = currentTime;
+    }
   }
 
 
@@ -115,7 +119,7 @@ function draw() {
     image(videoBodytext, 0, 0, Screenwidth, Screenheight);
  }
  if (iseyesPlaying) {
-  image(eyeImages[eyeIndex], 0+eyeShiftx, 0+eyeShifty, Screenwidth, Screenheight);//眼睛形状蒙版，确保画面不会超出眼睛形状
+  image(eyeImages.eyeList1[eyeIndex], 0+eyeShiftx, -30+eyeShifty, Screenwidth, Screenheight);//眼睛形状蒙版，确保画面不会超出眼睛形状
 }
 
 
@@ -151,6 +155,7 @@ function executeStages(){
       console.log("Stage: 1");
       if(stageStatus != previoussStageStatus){
         previoussStageStatus = stageStatus;
+        iseyesPlaying = false;
       }
       // Do something for stage 0
       break;
@@ -238,6 +243,14 @@ function gotPoses(poses) {
 
 function preload() {
   robotImg = loadImage('image/robot.png');
-  eyeImages.push(loadImage('image/美少女战士眼睛.png'));
-  eyeImages.push(loadImage('image/美少女战士眼睛.png'));
+  eyeImages.eyeList1 = [];
+  eyeImages.eyeList2 = [];
+  eyeImages.eyeList1.push(loadImage('image/美少女战士眼睛.png'));
+  eyeImages.eyeList1.push(loadImage('image/meishaonvzhanshi_3.png'));
+  eyeImages.eyeList2.push(loadImage('image/eye1.png'));
+  eyeImages.eyeList2.push(loadImage('image/eye2.png'));
+  // eyeImages.push(loadImage('image/.png'));
+  // eyeImages.push(loadImage('image/.png'));
+  // eyeImages.push(loadImage('image/.png'));
+  // eyeImages.push(loadImage('image/.png'));
 }
