@@ -1,6 +1,6 @@
 let port;
 let connectBtn;
-let stageStatus = 4;
+let stageStatus = 1;
 var textEffects = []; // 存储所有文字特效的数组
 var eyeImages = [];
 var transformationVideo = [];
