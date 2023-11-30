@@ -6,6 +6,8 @@ const int motorPin1 = 9;
 const int motorPin2 = 10;
 const int handPin = 8;
 int handState = 0;
+const int buttonPin = A1;  // the number of the pushbutton pin
+int buttonState = 0; 
 unsigned long stage1StartTime = 0; // 跟踪stage1开始的时间
 unsigned long stage2StartTime = 0; // 跟踪stage1开始的时间
 int wirespinTime = 1000;
@@ -49,7 +51,13 @@ void loop() {
   
 void updateStageStatus() {
   int sensorValue = analogRead(A0);
-
+  buttonState = analogRead(buttonPin);
+  //Serial.println(buttonState);
+    if (buttonState >800 && stageStatus != 1) {
+    Serial.println("1");
+    stageStatus = 1;
+    stage1StartTime = 0; // 重置stage1开始时间
+  }
   if (handState == HIGH && stageStatus != 1) {
     Serial.println("1");
     stageStatus = 1;
@@ -100,4 +108,3 @@ void resetStages() {
   digitalWrite(3, LOW);
   digitalWrite(4, LOW);
 }
-
