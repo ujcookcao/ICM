@@ -1,6 +1,6 @@
 let port;
 let connectBtn;
-let stageStatus = 2;
+let stageStatus = 1;
 var textEffects = []; // 存储所有文字特效的数组
 var eyeImages = [];
 var transformationVideo = [];
@@ -20,7 +20,7 @@ let eyeShifty;
 let previoussStageStatus = 0;
 let bodyvideoStartTime = 0;
 let iseyesPlaying = false;
-
+let transformationIndex;
 function setup() {
   createCanvas(Screenwidth, Screenheight);
 
@@ -52,8 +52,15 @@ function setup() {
   //----------------------------------------------------------------------------
   //transformation video code
   transformationVideo.push(createVideo('video/meishaonvzhanshi.mp4'));
-  transformationVideo[0].hide();
-  transformationVideo[0].onended(videoEnded);
+  transformationVideo.push(createVideo('video/jienigui.mp4'));
+  transformationVideo.push(createVideo('video/feitianxiaonvjin.mp4'));
+  transformationVideo.push(createVideo('video/tiannvshou.mp4'));
+
+  for (let i = 0; i < transformationVideo.length; i++) {
+    transformationVideo[i].hide();
+    transformationVideo[i].onended(videoEnded);
+  }
+  
   //----------------------------------------------------------------------------
   //video eye tracking code
   video = createCapture(VIDEO);
@@ -124,14 +131,15 @@ function draw() {
     image(videoBodytext, 0, 0, Screenwidth, Screenheight);
  }
  if (iseyesPlaying) {
-  image(eyeImages.eyeList1[eyeIndex], 0+eyeShiftx, -30+eyeShifty, Screenwidth, Screenheight);//眼睛形状蒙版，确保画面不会超出眼睛形状
+  
+  image(eyeImages.eyeList1[transformationIndex][eyeIndex], 0+eyeShiftx, -30+eyeShifty, Screenwidth, Screenheight);//眼睛形状蒙版，确保画面不会超出眼睛形状
 }
 
 
  image(robotImg, 0, 0, Screenwidth, Screenheight);//人物形状蒙版，确保画面不会超出人物形状
 
  if (isVideoPlaying) {
-  image(transformationVideo[0], 0, 0, Screenwidth, Screenheight);
+  image(transformationVideo[transformationIndex], 0, 0, Screenwidth, Screenheight);
 }
   // changes button label based on connection status
 //   if (!port.opened()) {
@@ -149,6 +157,7 @@ function connectBtnClick() {
 }
 function changStatus(str){
   if (str == 1){
+    transformationIndex = transformationIndex = floor(random(0,3));
     stageStatus = 2;
   }
 }
@@ -170,6 +179,7 @@ function executeStages(){
         bodyvideoStartTime = millis();
       }
       if(stageStatus != previoussStageStatus){
+        
         triggerbodytextvideo();
         previoussStageStatus = stageStatus;
       }
@@ -211,17 +221,32 @@ function triggerbodytextvideo(){
   }
 }
 function triggerVideo() {
-  // 检查视频是否已经在播放
-  if (!isVideoPlaying) {
-    transformationVideo[0].play();
-    //transformationVideo[0].show(); // 显示视频
-    isVideoPlaying = true; // 更新播放状态
+  // 确保 transformationIndex 是有效的索引
+  console.log("triggerVideo: " + transformationIndex);
+  if (transformationIndex >= 0 && transformationIndex < transformationVideo.length) {
+    // 获取对应的视频对象
+    let video = transformationVideo[transformationIndex];
+
+    // 检查视频对象是否定义
+    if (video) {
+      // 检查视频是否已经在播放
+      if (!isVideoPlaying) {
+        video.show(); // 显示视频
+        video.play(); // 播放视频
+        isVideoPlaying = true; // 更新播放状态
+      }
+    } else {
+      console.error('Video at index ' + transformationIndex + ' is undefined.');
+    }
+  } else {
+    console.error('Invalid transformationIndex: ' + transformationIndex);
   }
 }
+
 function videoEnded() {
   console.log('视频播放结束');
   isVideoPlaying = false; // 更新播放状态
-  transformationVideo[0].hide(); // 隐藏视频
+  transformationVideo[transformationIndex].hide(); // 隐藏视频
   stageStatus = 4;
   // 在这里添加视频播放结束后的逻辑
 }
@@ -250,9 +275,24 @@ function preload() {
   robotImg = loadImage('image/robot.png');
   eyeImages.eyeList1 = [];
   eyeImages.eyeList2 = [];
-  eyeImages.eyeList1.push(loadImage('image/美少女战士眼睛.png'));
-  eyeImages.eyeList1.push(loadImage('image/meishaonvzhanshi_2.png'));
-  eyeImages.eyeList1.push(loadImage('image/meishaonvzhanshi_3.png'));
+  eyeImages.eyeList1[0] = [];
+  eyeImages.eyeList1[1] = [];
+  eyeImages.eyeList1[2] = [];
+  eyeImages.eyeList1[3] = [];
+  eyeImages.eyeList1[0].push(loadImage('image/美少女战士眼睛.png'));
+  eyeImages.eyeList1[0].push(loadImage('image/meishaonvzhanshi_2.png'));
+  eyeImages.eyeList1[0].push(loadImage('image/meishaonvzhanshi_3.png'));
+  eyeImages.eyeList1[1].push(loadImage('image/jienigui.png'));
+  eyeImages.eyeList1[1].push(loadImage('image/jienigui.png'));
+  eyeImages.eyeList1[1].push(loadImage('image/jienigui.png'));
+  eyeImages.eyeList1[2].push(loadImage('image/feitianxiaonvjin_1.png'));
+  eyeImages.eyeList1[2].push(loadImage('image/feitianxiaonvjin_1.png'));
+  eyeImages.eyeList1[2].push(loadImage('image/feitianxiaonvjin_2.png'));
+
+  eyeImages.eyeList1[3].push(loadImage('image/feitianxiaonvjin_1.png'));
+  eyeImages.eyeList1[3].push(loadImage('image/feitianxiaonvjin_1.png'));
+  eyeImages.eyeList1[3].push(loadImage('image/feitianxiaonvjin_2.png'));
+  
   eyeImages.eyeList2.push(loadImage('image/eye1.png'));
   eyeImages.eyeList2.push(loadImage('image/eye2.png'));
   // eyeImages.push(loadImage('image/.png'));
