@@ -20,7 +20,7 @@ let eyeShifty;
 let previoussStageStatus = 0;
 let bodyvideoStartTime = 0;
 let iseyesPlaying = false;
-let transformationIndex;
+let transformationIndex =3;
 function setup() {
   createCanvas(Screenwidth, Screenheight);
 
@@ -157,7 +157,8 @@ function connectBtnClick() {
 }
 function changStatus(str){
   if (str == 1){
-    transformationIndex = transformationIndex = floor(random(0,3));
+    transformationIndex = floor(random(0,3));
+    iseyesPlaying = false;
     stageStatus = 2;
   }
 }
@@ -175,6 +176,7 @@ function executeStages(){
       break;
     case 2:
       // Stage 1
+      iseyesPlaying = false;
       if(bodyvideoStartTime == 0){
         bodyvideoStartTime = millis();
       }
@@ -188,8 +190,10 @@ function executeStages(){
   
       break;
     case 3:
+      iseyesPlaying = false;
       // Stage 2
       if(stageStatus != previoussStageStatus){
+        transformationIndex = floor(random(0,3));
         triggerVideo();
         previoussStageStatus = stageStatus;
       }
