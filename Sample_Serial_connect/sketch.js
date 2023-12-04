@@ -20,7 +20,7 @@ let eyeShifty;
 let previoussStageStatus = 0;
 let bodyvideoStartTime = 0;
 let iseyesPlaying = false;
-let transformationIndex = 2;
+let transformationIndex = 3;
 function setup() {
   createCanvas(Screenwidth, Screenheight);
 
