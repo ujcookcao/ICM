@@ -20,7 +20,7 @@ let eyeShifty;
 let previoussStageStatus = 0;
 let bodyvideoStartTime = 0;
 let iseyesPlaying = false;
-let transformationIndex;
+let transformationIndex = 2;
 function setup() {
   createCanvas(Screenwidth, Screenheight);
 
@@ -157,7 +157,7 @@ function connectBtnClick() {
 }
 function changStatus(str){
   if (str == 1){
-    transformationIndex = transformationIndex = floor(random(0,3));
+    transformationIndex = transformationIndex = floor(random(0,4));
     stageStatus = 2;
   }
 }
@@ -288,15 +288,10 @@ function preload() {
   eyeImages.eyeList1[2].push(loadImage('image/feitianxiaonvjin_1.png'));
   eyeImages.eyeList1[2].push(loadImage('image/feitianxiaonvjin_1.png'));
   eyeImages.eyeList1[2].push(loadImage('image/feitianxiaonvjin_2.png'));
-
-  eyeImages.eyeList1[3].push(loadImage('image/feitianxiaonvjin_1.png'));
-  eyeImages.eyeList1[3].push(loadImage('image/feitianxiaonvjin_1.png'));
-  eyeImages.eyeList1[3].push(loadImage('image/feitianxiaonvjin_2.png'));
+  eyeImages.eyeList1[3].push(loadImage('image/仙女兽睁眼.png'));
+  eyeImages.eyeList1[3].push(loadImage('image/仙女兽睁眼.png'));
+  eyeImages.eyeList1[3].push(loadImage('image/仙女兽闭眼.png'));
   
   eyeImages.eyeList2.push(loadImage('image/eye1.png'));
   eyeImages.eyeList2.push(loadImage('image/eye2.png'));
-  // eyeImages.push(loadImage('image/.png'));
-  // eyeImages.push(loadImage('image/.png'));
-  // eyeImages.push(loadImage('image/.png'));
-  // eyeImages.push(loadImage('image/.png'));
 }
