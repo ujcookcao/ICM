@@ -33,9 +33,9 @@ function setup() {
     port.open(usedPorts[0], 9600);
   }
   
-  connectBtn = createButton('_Connect_');
-  connectBtn.position(80, 200);
-  connectBtn.mousePressed(connectBtnClick);
+  // connectBtn = createButton('_Connect_');
+  // connectBtn.position(80, 200);
+  // connectBtn.mousePressed(connectBtnClick);
 
   //----------------------------------------------------------------------------
    //body text video code
