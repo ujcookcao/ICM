@@ -157,7 +157,7 @@ function connectBtnClick() {
 }
 function changStatus(str){
   if (str == 1){
-    transformationIndex = transformationIndex = floor(random(0,4));
+    transformationIndex = floor(random(0,4));
     stageStatus = 2;
   }
 }
@@ -172,6 +172,7 @@ function executeStages(){
         iseyesPlaying = false;
       }
       // Do something for stage 0
+      iseyesPlaying = false;
       break;
     case 2:
       // Stage 1
@@ -185,6 +186,7 @@ function executeStages(){
       }
       console.log("Stage: 2");
       // Do something for stage 1
+      iseyesPlaying = false;
   
       break;
     case 3:
@@ -195,6 +197,7 @@ function executeStages(){
       }
       console.log("Stage: 3");
       // Do something for stage 2
+      iseyesPlaying = false;
 
       break;
     case 4:
