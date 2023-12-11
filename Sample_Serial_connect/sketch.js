@@ -1,6 +1,6 @@
 let port;
 let connectBtn;
-let stageStatus = 1;
+let stageStatus = 2;
 var textEffects = []; // 存储所有文字特效的数组
 var eyeImages = [];
 var transformationVideo = [];
@@ -21,6 +21,11 @@ let previoussStageStatus = 0;
 let bodyvideoStartTime = 0;
 let iseyesPlaying = false;
 let transformationIndex = 3;
+let startTime;
+let elapsedTime
+let remainingTime
+let countdownDuration = 27000; // 27秒倒计时
+let isCountingDown = true;
 function setup() {
   createCanvas(Screenwidth, Screenheight);
 
@@ -68,7 +73,6 @@ function setup() {
   video.hide();
   poseNet = ml5.poseNet(video, modelReady);
   poseNet.on('pose', gotPoses);
-
 
 }
 
@@ -129,6 +133,26 @@ function draw() {
   //bodytexting code while charging energy
   if (isbodytextPlaying) {
     image(videoBodytext, 0, 0, Screenwidth, Screenheight);
+    if (isCountingDown) {
+      elapsedTime = millis() - startTime;
+      remainingTime = countdownDuration - elapsedTime;
+      
+      if (remainingTime > 0) {
+        let remainingSeconds = int(remainingTime / 1000);
+        rectMode(CENTER);
+        textSize(48); // 设置字体大小
+        textStyle(BOLD); // 设置字体为粗体
+        fill(255,255,255,150); // 设置文本颜色为白色
+        text(remainingSeconds, width / 2-30, height / 2+180);
+        textSize(20); // 设置字体大小
+        
+        text("Please hold my hand", width / 2-100, height / 2+80)
+        text("to up load", width / 2-50, height / 2+120)
+        
+      } else {
+        isCountingDown = false; // 停止倒计时
+      }
+    }
  }
  if (iseyesPlaying) {
   
@@ -221,6 +245,7 @@ function triggerbodytextvideo(){
   if(!isbodytextPlaying){
     videoBodytext.play();
     isbodytextPlaying = true;
+    startTime = millis(); // 获取当前时间
   }
 }
 function triggerVideo() {
